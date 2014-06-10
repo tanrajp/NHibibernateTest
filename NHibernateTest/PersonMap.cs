@@ -12,7 +12,7 @@ namespace NHibernateTest
     {
         public PersonMap()
         {
-            Id(x=>x.Id, m=>m.Generator(Generators.GuidComb));
+            Id(x=>x.Id, m=>m.Generator(Generators.Assigned));
             Property(x=>x.fName);
             Property(x=>x.sName);
         }

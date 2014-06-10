@@ -10,43 +10,94 @@ using NHibernate.Mapping.ByCode;
 
 namespace NHibernateTest
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+
+        public static void AddPerson(Person p)
         {
-            var nhConfig = new Configuration()
-                .Proxy(proxy =>
-                       proxy.ProxyFactoryFactory<NHibernate.Bytecode.DefaultProxyFactoryFactory>())
-                .DataBaseIntegration(db =>
-                    {
-                        db.Dialect<MsSql2008Dialect>();
-                        //db.ConnectionString = @"Server=localhost;initial catalog=Test;User Id=sa;Password=cleanAdmin01";
-                        db.ConnectionStringName = "db";
-                    }).AddAssembly(typeof (Person).Assembly);
-                //.AddAssembly((typeof (Person).Assembly));
-                //.AddAssembly("NHibernateTest");
-
-            var mapper = new ModelMapper();
-            mapper.AddMapping<PersonMap>();
-
-            var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
-            nhConfig.AddMapping(mapping);
-
-            var sessionFactory = nhConfig.BuildSessionFactory();
-
-            using (var session = sessionFactory.OpenSession())
-            using(var tran = session.BeginTransaction())
+            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            using (var tran = session.BeginTransaction())
             {
-                var person = new Person
-                    {
-                        fName = "Test",
-                        sName = "Test"
-                    };
-                session.Save(person);
+                session.Save(p);
                 tran.Commit();
             }
+        }
 
-            Console.WriteLine(("hello"));
+        public static void DeletePerson(Person p)
+        {
+            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Delete(p);
+                tran.Commit();
+            }
+        }
+
+        public static void UpdatePerson(Person p)
+        {
+            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Update(p);
+                tran.Commit();
+            }
+        }
+
+        public static void ReadTable()
+        {
+            IList<Person> personList = new List<Person>();
+            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            {
+                personList = session.QueryOver<Person>().List<Person>();
+            }
+
+            foreach (var p in (personList))
+            {
+                Console.WriteLine(p.fName);
+                Console.WriteLine(p.sName);
+                Console.WriteLine(" ");
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            var Person1 = new Person
+                {
+                    Id = 1,
+                    fName = "Client",
+                    sName = "One"
+                };
+
+            var Person2 = new Person
+                {
+                    Id = 2,
+                    fName = "Client",
+                    sName = "Two"
+                };
+
+            var Person3 = new Person
+                {
+                    Id = 3,
+                    fName = "Client",
+                    sName = "Three"
+                };
+
+            AddPerson(Person1);
+            AddPerson(Person2);
+            AddPerson(Person3);
+            ReadTable();
+
+            DeletePerson(Person1);
+            ReadTable();
+
+            var newPerson = new Person
+                {
+                    Id = 3,
+                    fName = "Update",
+                    sName= "Three"
+                };
+            UpdatePerson(newPerson);
+            ReadTable();
 
             Console.ReadLine();
         }
