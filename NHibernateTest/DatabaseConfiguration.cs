@@ -7,6 +7,8 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
 using NHibernate.Mapping.ByCode;
+using NHibernateTest.Domain;
+using NHibernateTest.Mapping;
 
 namespace NHibernateTest
 {
@@ -25,6 +27,7 @@ namespace NHibernateTest
 
                 var mapper = new ModelMapper();
                 mapper.AddMapping<PersonMap>();
+                mapper.AddMapping<AddressMap>();
 
                 var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
                 nhConfig.AddMapping(mapping);

@@ -41,6 +41,9 @@
     <Reference Include="NHibernate.Caches.SysCache">
       <HintPath>..\..\..\..\..\..\..\svn\frameworks\lib\nhibernate\NHibernate.Caches.SysCache.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,11 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs" />
-    <Compile Include="AddressMap.cs" />
+    <Compile Include="Domain\Address.cs" />
+    <Compile Include="IPersonRepository.cs" />
+    <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="PersonMap.cs" />
+    <Compile Include="Domain\Person.cs" />
+    <Compile Include="Mapping\PersonMap.cs" />
+    <Compile Include="PersonRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
