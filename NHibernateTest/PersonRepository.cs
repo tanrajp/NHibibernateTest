@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NHibernate.Criterion;
 using NHibernateTest.Domain;
 using NUnit.Framework;
+using NHibernateTest.Domain;
 
 namespace NHibernateTest
 {
     public class PersonRepository:IPersonRepository
     {
-        public void Add(Domain.Person person)
+        public void Add(Person person)
         {
             using(var session = DatabaseConfiguration.SessionFactory().OpenSession())
             using (var tran = session.BeginTransaction())
@@ -21,24 +23,43 @@ namespace NHibernateTest
 
         }
 
-        public void Update(Domain.Person person)
+        public void Update(Person person)
         {
-            throw new NotImplementedException();
+            using(var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Update(person);
+                tran.Commit();
+            }
         }
 
-        public void Remove(Domain.Person person)
+        public void Remove(Person person)
         {
-            throw new NotImplementedException();
+            using(var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Delete(person);
+                tran.Commit();
+            }
         }
 
-        public Domain.Person GetPersonById(Guid personId)
+        public Person GetPersonById(Guid personId)
         {
-            throw new NotImplementedException();
+            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            {
+                return session.Get<Person>(personId);
+            }
         }
 
-        public Domain.Person GetPersonByName(string name)
+        public Person GetPersonByName(string name)
         {
-            throw new NotImplementedException();
+            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
+            {
+                var person =
+                    session.CreateCriteria(typeof (Person)).Add(Restrictions.Eq("fName", name)).UniqueResult<Person>();
+
+                return person;
+            }
         }
     }
 }

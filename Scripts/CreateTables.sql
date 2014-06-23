@@ -4,7 +4,7 @@ if exists (select * from sys.objects where object_id = OBJECT_ID('Person')) drop
 
 create table Person
 (
-	Id int not null primary key,
+	Id Guid not null primary key,
 	fName varchar(50),
 	sName varchar(50)
 )

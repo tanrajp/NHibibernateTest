@@ -8,7 +8,7 @@ namespace NHibernateTest.Mapping
     {
         public PersonMap()
         {
-            Id(x=>x.Id, m=>m.Generator(Generators.Assigned));
+            Id(x=>x.Id, m=>m.Generator(Generators.Guid));
             Property(x=>x.fName);
             Property(x=>x.sName);
         }

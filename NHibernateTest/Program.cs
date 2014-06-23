@@ -60,51 +60,51 @@ namespace NHibernateTest
             }
         }
 
-        public static void TestPersonTable()
-        {
-            var Person1 = new Person
-            {
-                Id = 1,
-                fName = "Client",
-                sName = "One"
-            };
+        //public static void TestPersonTable()
+        //{
+        //    var Person1 = new Person
+        //    {
+        //        Id = 1,
+        //        fName = "Client",
+        //        sName = "One"
+        //    };
 
-            var Person2 = new Person
-            {
-                Id = 2,
-                fName = "Client",
-                sName = "Two"
-            };
+        //    var Person2 = new Person
+        //    {
+        //        Id = 2,
+        //        fName = "Client",
+        //        sName = "Two"
+        //    };
 
-            var Person3 = new Person
-            {
-                Id = 3,
-                fName = "Client",
-                sName = "Three"
-            };
+        //    var Person3 = new Person
+        //    {
+        //        Id = 3,
+        //        fName = "Client",
+        //        sName = "Three"
+        //    };
 
-            AddPerson(Person1);
-            AddPerson(Person2);
-            AddPerson(Person3);
-            ReadTable();
+        //    AddPerson(Person1);
+        //    AddPerson(Person2);
+        //    AddPerson(Person3);
+        //    ReadTable();
 
-            DeletePerson(Person1);
-            ReadTable();
+        //    DeletePerson(Person1);
+        //    ReadTable();
 
-            var newPerson = new Person
-            {
-                Id = 3,
-                fName = "Update",
-                sName = "Three"
-            };
-            UpdatePerson(newPerson);
-            ReadTable();
-        }
+        //    var newPerson = new Person
+        //    {
+        //        Id = 3,
+        //        fName = "Update",
+        //        sName = "Three"
+        //    };
+        //    UpdatePerson(newPerson);
+        //    ReadTable();
+        //}
 
         static void Main(string[] args)
         {
 
-            TestPersonTable();
+            //TestPersonTable();
             Console.WriteLine("done!");
             Console.ReadLine();
         }
