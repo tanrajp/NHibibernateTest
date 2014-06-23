@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="AddressMap.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonMap.cs" />
