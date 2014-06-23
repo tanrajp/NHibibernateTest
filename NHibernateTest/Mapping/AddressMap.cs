@@ -8,7 +8,7 @@ namespace NHibernateTest.Mapping
     {
         public AddressMap()
         {
-            Id(x=>x.Id, m=>m.Generator(Generators.Assigned));
+            Id(x=>x.Id, m=>m.Generator(Generators.Guid));
             Property(x=>x.HouseNumber);
             Property(x=>x.StreetName);
             Property(x=>x.PostCode);

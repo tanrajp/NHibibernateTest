@@ -4,7 +4,7 @@ if exists (select * from sys.objects where object_id = OBJECT_ID('Person')) drop
 
 create table Person
 (
-	Id Guid not null primary key,
+	Id UNIQUEIDENTIFIER Default newid() primary key,
 	fName varchar(50),
 	sName varchar(50)
 )
@@ -13,7 +13,7 @@ if exists(select * from sys.objects where object_id = OBJECT_ID('Address')) drop
 
 create table Address
 (
-	Id int not null primary key,
+	Id UNIQUEIDENTIFIER Default newid() primary key,
 	HouseNumber varchar(50),
 	StreetName varchar(50),
 	PostCode varchar(50),
