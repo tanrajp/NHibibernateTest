@@ -13,37 +13,6 @@ namespace NHibernateTest
 {
     public class Program
     {
-
-        public static void AddPerson<T>(T entity)
-        {
-            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
-            using (var tran = session.BeginTransaction())
-            {
-                session.Save(entity);
-                tran.Commit();
-            }
-        }
-
-        public static void DeletePerson<T>(T entity)
-        {
-            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
-            using (var tran = session.BeginTransaction())
-            {
-                session.Delete(entity);
-                tran.Commit();
-            }
-        }
-
-        public static void UpdatePerson<T>(T entity)
-        {
-            using (var session = DatabaseConfiguration.SessionFactory().OpenSession())
-            using (var tran = session.BeginTransaction())
-            {
-                session.Update(entity);
-                tran.Commit();
-            }
-        }
-
         public static void ReadTable()
         {
             IList<Person> personList = new List<Person>();
@@ -60,51 +29,40 @@ namespace NHibernateTest
             }
         }
 
-        //public static void TestPersonTable()
-        //{
-        //    var Person1 = new Person
-        //    {
-        //        Id = 1,
-        //        fName = "Client",
-        //        sName = "One"
-        //    };
-
-        //    var Person2 = new Person
-        //    {
-        //        Id = 2,
-        //        fName = "Client",
-        //        sName = "Two"
-        //    };
-
-        //    var Person3 = new Person
-        //    {
-        //        Id = 3,
-        //        fName = "Client",
-        //        sName = "Three"
-        //    };
-
-        //    AddPerson(Person1);
-        //    AddPerson(Person2);
-        //    AddPerson(Person3);
-        //    ReadTable();
-
-        //    DeletePerson(Person1);
-        //    ReadTable();
-
-        //    var newPerson = new Person
-        //    {
-        //        Id = 3,
-        //        fName = "Update",
-        //        sName = "Three"
-        //    };
-        //    UpdatePerson(newPerson);
-        //    ReadTable();
-        //}
+        
 
         static void Main(string[] args)
         {
+            IPersonRepository repo = new PersonRepository();
+            var person1 = new Person {fName = "Test1", sName = "One"};
+            var person2 = new Person {fName = "Test2", sName = "Two"};
+            var person3 = new Person {fName = "Test3", sName = "Three"};
 
-            //TestPersonTable();
+            repo.Add(person1);
+            repo.Add(person2);
+            repo.Add(person3);
+
+            person2.fName = "newName";
+            repo.Update(person2);
+
+            repo.Remove(person3);
+
+            IAddressRepository addressRepo = new AddressRepository();
+            var address1 = new Address {HouseNumber = "01", StreetName = "StreetName1",City = "London", PostCode = "AA1 1AA"};
+            var address2 = new Address { HouseNumber = "02", StreetName = "StreetName2", City = "London", PostCode = "AA2 2AA" };
+            var address3 = new Address { HouseNumber = "03", StreetName = "StreetName3", City = "London", PostCode = "AA3 3AA" };
+
+            addressRepo.Add(address1);
+            addressRepo.Add(address2);
+            addressRepo.Add(address3);
+
+            address2.StreetName = "Updated Street";
+            addressRepo.Update(address2);
+            
+            addressRepo.Remove(address3);
+
+
+            ReadTable();
             Console.WriteLine("done!");
             Console.ReadLine();
         }

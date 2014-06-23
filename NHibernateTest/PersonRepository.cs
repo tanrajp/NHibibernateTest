@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using NHibernate.Criterion;
 using NHibernateTest.Domain;
 using NUnit.Framework;
-using NHibernateTest.Domain;
 
 namespace NHibernateTest
 {

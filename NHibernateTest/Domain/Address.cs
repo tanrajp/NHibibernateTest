@@ -1,4 +1,6 @@
-﻿namespace NHibernateTest.Domain
+﻿using System;
+
+namespace NHibernateTest.Domain
 {
     public class Address
     {

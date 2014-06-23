@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressRepository.cs" />
     <Compile Include="Domain\Address.cs" />
+    <Compile Include="IAddressRepository.cs" />
     <Compile Include="IPersonRepository.cs" />
     <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
