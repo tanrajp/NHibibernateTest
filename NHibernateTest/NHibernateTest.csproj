@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HibernatingRhinos.Profiler.Appender.v4.0">
+      <HintPath>D:\Downloads\NHProf\HibernatingRhinos.Profiler.Appender.v4.0.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\..\..\..\..\..\svn\frameworks\lib\nhibernate\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -53,15 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressRepository.cs" />
     <Compile Include="Domain\Address.cs" />
-    <Compile Include="IAddressRepository.cs" />
-    <Compile Include="IPersonRepository.cs" />
+    <Compile Include="Domain\Borough.cs" />
     <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="Domain\Person.cs" />
+    <Compile Include="Mapping\BoroughMap.cs" />
     <Compile Include="Mapping\PersonMap.cs" />
-    <Compile Include="PersonRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

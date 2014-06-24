@@ -28,6 +28,7 @@ namespace NHibernateTest
                 var mapper = new ModelMapper();
                 mapper.AddMapping<PersonMap>();
                 mapper.AddMapping<AddressMap>();
+                mapper.AddMapping<BoroughMap>();
 
                 var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
                 nhConfig.AddMapping(mapping);

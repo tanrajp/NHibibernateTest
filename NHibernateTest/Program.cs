@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NHibernate.Cfg;
+using NHibernate.Criterion;
 using NHibernate.Dialect;
 using NHibernate.Cfg.Loquacious;
 using NHibernate.Mapping.ByCode;
@@ -20,11 +21,10 @@ namespace NHibernateTest
             {
                 personList = session.QueryOver<Person>().List<Person>();
             }
-
+            Console.WriteLine("All records in Person Table");
             foreach (var p in (personList))
             {
-                Console.WriteLine(p.fName);
-                Console.WriteLine(p.sName);
+                Console.Write("First Name: " + p.fName + " Surname: " + p.sName);
                 Console.WriteLine(" ");
             }
         }
@@ -33,36 +33,103 @@ namespace NHibernateTest
 
         static void Main(string[] args)
         {
-            IPersonRepository repo = new PersonRepository();
-            var person1 = new Person {fName = "Test1", sName = "One"};
-            var person2 = new Person {fName = "Test2", sName = "Two"};
-            var person3 = new Person {fName = "Test3", sName = "Three"};
+            var sessionFactory = DatabaseConfiguration.SessionFactory();
+            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
 
-            repo.Add(person1);
-            repo.Add(person2);
-            repo.Add(person3);
+            Borough[] boroughArray = new[]
+                {
+                    new Borough {Name = "borough1"},
+                    new Borough {Name = "borough2"},
+                    new Borough {Name = "borough3"}
+                };
 
-            person2.fName = "newName";
-            repo.Update(person2);
+            using (var session = sessionFactory.OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                foreach (var borough in boroughArray)
+                {
+                    session.Save(borough);
+                }
+                tran.Commit();
+            }
 
-            repo.Remove(person3);
+            using (var session = sessionFactory.OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                var updatePerson = boroughArray[1];
+                updatePerson.Name = "updated name";
+                session.Update(updatePerson);
+                tran.Commit();
+            }
 
-            IAddressRepository addressRepo = new AddressRepository();
-            var address1 = new Address {HouseNumber = "01", StreetName = "StreetName1",City = "London", PostCode = "AA1 1AA"};
-            var address2 = new Address { HouseNumber = "02", StreetName = "StreetName2", City = "London", PostCode = "AA2 2AA" };
-            var address3 = new Address { HouseNumber = "03", StreetName = "StreetName3", City = "London", PostCode = "AA3 3AA" };
+            using (var session = sessionFactory.OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Delete(boroughArray[2]);
+                tran.Commit();
+            }
 
-            addressRepo.Add(address1);
-            addressRepo.Add(address2);
-            addressRepo.Add(address3);
+            var person1 = new Person {fName = "John", sName = "Smith", borough = boroughArray[0]};
 
-            address2.StreetName = "Updated Street";
-            addressRepo.Update(address2);
-            
-            addressRepo.Remove(address3);
+            using (var session = sessionFactory.OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Save(person1);
+                tran.Commit();
+            }
 
+            var person2 = new Person {fName = "Doctor", sName = "Who", borough = boroughArray[0]};
+            using (var session = sessionFactory.OpenSession())
+            using(var tran = session.BeginTransaction())
+            {
+                session.Save(person2);
+                tran.Commit();
+            }
+
+            var person3 = new Person {fName = "John", sName = "John", borough = boroughArray[1]};
+            using (var session = sessionFactory.OpenSession())
+            using (var tran = session.BeginTransaction())
+            {
+                session.Save(person3);
+                tran.Commit();
+            }
+
+            IList<Person> list = new List<Person>();
+            using (var session = sessionFactory.OpenSession())
+            {
+                list = session.QueryOver<Person>()
+                       .JoinQueryOver(Person => Person.borough)
+                       .Where(c=>c.Name =="borough1")
+                       .List<Person>();
+            }
+
+            Console.WriteLine("All people with the borough -'borough1'");
+            foreach (var person in list)
+            {
+                Console.Write("First Name: "+ person.fName +" Surname: "+ person.sName);
+                Console.WriteLine();
+            }
 
             ReadTable();
+
+            Console.WriteLine("Persone with the first name 'Doctor'");
+            using (var session = sessionFactory.OpenSession())
+            {
+                var fromDb =
+                            session.CreateCriteria(typeof(Person)).Add(Restrictions.Eq("fName", "Doctor")).UniqueResult<Person>();
+
+                Console.WriteLine(fromDb.fName + " " + fromDb.sName);
+            }
+
+            Console.WriteLine("Persone with the first name 'Doctor'");
+            using (var session = sessionFactory.OpenSession())
+            {
+                var fromDb =
+                    session.QueryOver<Person>().Where(c => c.fName == "Doctor").SingleOrDefault();
+
+                Console.WriteLine(fromDb.fName + " " + fromDb.sName);
+            }
+
             Console.WriteLine("done!");
             Console.ReadLine();
         }
